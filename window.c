@@ -1346,8 +1346,8 @@ window_pane_find_up(struct window_pane *wp)
 	size = 0;
 
 	edge = wp->yoff;
-	if (edge == (status == 1 ? 1 : 0))
-		edge = wp->window->sy + 1 - (status == 2 ? 1 : 0);
+	if (options_get_number(global_options, "wrap-select-pane") && edge == 0)
+		edge = wp->window->sy + 1;
 
 	left = wp->xoff;
 	right = wp->xoff + wp->sx;
@@ -1393,9 +1393,9 @@ window_pane_find_down(struct window_pane *wp)
 	size = 0;
 
 	edge = wp->yoff + wp->sy + 1;
-	if (edge >= wp->window->sy - (status == 2 ? 1 : 0))
-		edge = (status == 1 ? 1 : 0);
 
+	if (options_get_number(global_options, "wrap-select-pane") && edge >= wp->window->sy)
+		edge = 0;
 	left = wp->xoff;
 	right = wp->xoff + wp->sx;
 
@@ -1439,7 +1439,7 @@ window_pane_find_left(struct window_pane *wp)
 	size = 0;
 
 	edge = wp->xoff;
-	if (edge == 0)
+	if (options_get_number(global_options, "wrap-select-pane") && edge == 0)
 		edge = wp->window->sx + 1;
 
 	top = wp->yoff;
@@ -1485,7 +1485,7 @@ window_pane_find_right(struct window_pane *wp)
 	size = 0;
 
 	edge = wp->xoff + wp->sx + 1;
-	if (edge >= wp->window->sx)
+	if (options_get_number(global_options, "wrap-select-pane") && edge >= wp->window->sx)
 		edge = 0;
 
 	top = wp->yoff;
